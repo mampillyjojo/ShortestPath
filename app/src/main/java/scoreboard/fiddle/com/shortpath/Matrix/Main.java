@@ -40,23 +40,39 @@ public class Main {
             matrixHelper.printArray(integerArray);
 
             // creates a new 2d array with all the costs
-            int [][] resultArray = matrixHelper.getResultArray(integerArray);
+            MatrixHelper.ResultNode[][] resultArray = matrixHelper.getResultArray(integerArray);
 
-            matrixHelper.printArray(resultArray);
+            matrixHelper.printResultNode(resultArray);
 
-            //finds the smallest value in the right most coulumn of result Matrix
-            result.indexOfSmallesItem = matrixHelper.findTheSmallestPath(resultArray);
-            result.shortestPathValue = resultArray[ result.indexOfSmallesItem][resultArray[0].length-1];
 
-            if(result.shortestPathValue < MAX_LIMIT){
-                result.isSuccesFull = true;
+            result.isSuccesFull = !matrixHelper.isLimitReached;
+
+            if(matrixHelper.valueOfLastNode >= 0 ){
+                result.indexOfSmallesItem = matrixHelper.findTheSmallestPath(resultArray);
+                result.shortestPathValue = resultArray[ result.indexOfSmallesItem][matrixHelper.getEndOfResultArray(resultArray)].value;
+
+                System.out.println("SmallestIndex :: "+result.indexOfSmallesItem);
+
+                result.resultArray = matrixHelper.findPath(resultArray,result.indexOfSmallesItem);
             }else{
-                result.isSuccesFull = false;
+                // negative case, cant reach the first column
+                result.indexOfSmallesItem = -1;
+                result.shortestPathValue =-1;
+
+               // System.out.println("SmallestIndex :: "+result.indexOfSmallesItem);
+
+                result.resultArray = new int[]{};
             }
 
-            System.out.println("SmallestIndex :: "+result.indexOfSmallesItem);
 
-            result.resultArray = matrixHelper.findPath(resultArray,result.indexOfSmallesItem);
+//            if(result.shortestPathValue < MAX_LIMIT){
+//                result.isSuccesFull = true;
+//            }else{
+//                result.isSuccesFull = false;
+//            }
+
+
+
 
         }
 

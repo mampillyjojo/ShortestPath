@@ -43,8 +43,8 @@ public class MainTest {
         Main.Result result = main.executeTest(inputArray);
 
         assertEquals(false,result.isSuccesFull);
-        assertEquals(68,result.shortestPathValue);
-        assertArrayEquals(new int[]{1,1,1,1,3},result.resultArray);
+        assertEquals(48,result.shortestPathValue);
+        assertArrayEquals(new int[]{1,1,1},result.resultArray);
 
     }
 
@@ -107,7 +107,7 @@ public class MainTest {
 
         assertEquals(true,result.isSuccesFull);
         assertEquals(14,result.shortestPathValue);
-        assertArrayEquals(new int[]{3,2,1,3},result.resultArray);
+        assertArrayEquals(new int[]{3,1,1,3},result.resultArray);
 
     }
 
@@ -134,13 +134,13 @@ public class MainTest {
         System.out.println("--- Executing test 8");
 
 
-        Integer inputArray[][] = {{51,51},{0,51},{51,51},{55}};
+        Integer inputArray[][] = {{51,51},{0,51},{51,51},{5,5}};
         Main main = new Main();
         Main.Result result = main.executeTest(inputArray);
 
-        assertEquals(false,result.isSuccesFull);
-        assertEquals(51,result.shortestPathValue);
-        assertArrayEquals(new int[]{2,1},result.resultArray);
+        assertEquals(true,result.isSuccesFull);
+        assertEquals(10,result.shortestPathValue);
+        assertArrayEquals(new int[]{4,4},result.resultArray);
 
     }
 
@@ -163,16 +163,49 @@ public class MainTest {
     @org.junit.Test
     public void executeTest10() throws Exception {
 
-        System.out.println("--- Executing test 8");
+        System.out.println("--- Executing test 10");
 
 
-        Integer inputArray[][] = {{51,51,51},{0,51,51},{51,51,51},{55,51}};
+        Integer inputArray[][] = {{51,51,51},{0,51,51},{51,51,51},{5,5,51}};
         Main main = new Main();
         Main.Result result = main.executeTest(inputArray);
 
         assertEquals(false,result.isSuccesFull);
-        assertEquals(51,result.shortestPathValue);
-        assertArrayEquals(new int[]{2,1,4},result.resultArray);
+        assertEquals(10,result.shortestPathValue);
+        assertArrayEquals(new int[]{4,4},result.resultArray);
+
+    }
+
+    @org.junit.Test
+    public void executeTest11() throws Exception {
+
+        System.out.println("--- Executing test 11");
+
+
+        Integer inputArray[][] = {{51,-2}};
+        Main main = new Main();
+        Main.Result result = main.executeTest(inputArray);
+
+        assertEquals(false,result.isSuccesFull);
+       // assertEquals(51,result.shortestPathValue);
+        assertArrayEquals(new int[]{},result.resultArray);
+
+    }
+
+
+    @org.junit.Test
+    public void executeTest12() throws Exception {
+
+        System.out.println("--- Executing test 12");
+
+
+        Integer inputArray[][] = {{6,3,-5,9},{-5,2,4,10},{3,-2,6,10},{6,-1,-2,10}};
+        Main main = new Main();
+        Main.Result result = main.executeTest(inputArray);
+
+        assertEquals(true,result.isSuccesFull);
+         assertEquals(0,result.shortestPathValue);
+        assertArrayEquals(new int[]{2,3,4,1},result.resultArray);
 
     }
 

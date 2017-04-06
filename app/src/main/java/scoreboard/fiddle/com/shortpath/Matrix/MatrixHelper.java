@@ -5,6 +5,16 @@ package scoreboard.fiddle.com.shortpath.Matrix;
  */
 public class MatrixHelper {
 
+    public class ResultNode{
+
+        public int value;
+      //  public boolean didReachLimit;
+
+    }
+
+    int valueOfLastNode = 0;
+    boolean isLimitReached = false;
+
     public int [][] getInputArray(int m,int n){
         int [][] array = new int[m][n];
         int count = 0;
@@ -30,6 +40,18 @@ public class MatrixHelper {
         return  array;
     }
 
+    public void printResultNode( ResultNode[][] array){
+            System.out.println("------ result Array -------");
+            for (int i = 0; i < array.length; i++) {
+                for (int j = 0; j < array[i].length; j++) {
+                    System.out.print(array[i][j].value+"  ");
+                }
+                System.out.println("");
+            }
+
+
+    }
+
     public int[][] convertToIntArray(Object [][] array) {
 
         int [][] integerArray = new int[array.length][array[0].length];
@@ -53,33 +75,93 @@ public class MatrixHelper {
      * @param array
      * @return
      */
-    public int[][] getResultArray(int [][] array){
+    public ResultNode[][] getResultArray(int [][] array){
         System.out.println("------  New Array -------");
 
 
-        int [][] newArray = array.clone();
+        ResultNode[][] newArray = new ResultNode[array.length][array[0].length];
 
-        for (int j = 1; j <array[0].length ; j++) {
+        for (int i=0;i<array.length;i++){
+            for (int j = 0; j <array[0].length ; j++) {
+                ResultNode node = new ResultNode();
+                node.value = array[i][j];
+
+
+//                if(array[i][j] > Main.MAX_LIMIT){
+//                    node.didReachLimit = true;
+//                }
+                newArray[i][j] = node;
+            }
+        }
+
+        for (int j = 0; j <array[0].length ; j++) {
+            boolean isBloacked = true;
             for (int i = 0; i < array.length; i++) {
 
+ //               int min = 0;
+//
+//                if(getNode(newArray,i-1,j-1).value <= Main.MAX_LIMIT && getNode(newArray,i-1,j-1).value <= Main.MAX_LIMIT){
+//
+//                    min  = Math.min(getValue(newArray,i-1,j-1),getValue(newArray,i,j-1));
+//                }else if((getNode(newArray,i-1,j-1).value <= Main.MAX_LIMIT)){
+//                    min = getValue(newArray,i,j-1);
+//                }else if((getNode(newArray,i,j-1).value <= Main.MAX_LIMIT)){
+//                    min = getValue(newArray,i-1,j-1);
+//                }
+//
+//                if((getNode(newArray,i+1,j-1).value <= Main.MAX_LIMIT)){
+//                    min = Math.min(min, getValue(newArray, i + 1, j - 1));
+//                }
+//
+                if(j == 0){
+                    if(array[i][j] < Main.MAX_LIMIT){
+                        isBloacked = false;
+                    }
+                }else{
+                    int min  = Math.min(getValue(newArray,i-1,j-1),getValue(newArray,i,j-1));
+                    min = Math.min(min, getValue(newArray, i + 1, j - 1));
 
-                int min  = Math.min(getValue(newArray,i-1,j-1),getValue(newArray,i,j-1));
-                min = Math.min(min, getValue(newArray, i + 1, j - 1));
-                newArray[i][j] = min+ array[i][j];
+                    int value = min+array[i][j];
+                    if(value < Main.MAX_LIMIT) {
+                        newArray[i][j].value = min + array[i][j];
+                        isBloacked = false;
+                    }
+//                    }else{
+//                        newArray[i][j].didReachLimit = true;
+//
+//                    }
+                }
+
+
+
+
 
 
             }
+
+            if(isBloacked){
+                valueOfLastNode = j-1;
+                isLimitReached = true;
+                break;
+            }
             System.out.println("");
 
-            printArray(newArray);
+            //printArray(newArray);
         }
+
+        printResultNode(newArray);
         return  newArray;
     }
 
-    public int getValue(int [][] a,int i, int j){
+    public ResultNode getNode(ResultNode [][] a,int i, int j){
+        i = correctValue(a, i);
+        return  a[i][j];
+    }
+    public int getValue(ResultNode [][] a,int i, int j){
 
         i = correctValue(a, i);
-        return a[i][j];
+        int value = a[i][j].value;
+        return value;
     }
 
     /**
@@ -87,16 +169,20 @@ public class MatrixHelper {
      * @param array
      * @return
      */
-    public int findTheSmallestPath(int [][] array){
+    public int findTheSmallestPath(ResultNode [][] array){
 
-        int lastColumn = array[0].length-1;
-        int min = array[0][lastColumn];
+       // int lastColumn = array[0].length-1;
+       // int lastColumn = (valueOfLastNode > 0)? valueOfLastNode:array[0].length-1;
+      //  int lastColumn = valueOfLastNode;
+
+        int lastColumn = getEndOfResultArray(array);
+        int min = array[0][lastColumn].value;
         int smallestIndex = 0;
 
 
         for (int i=0;i< array.length;i++){
-            if(min > array[i][lastColumn]){
-                min = array[i][lastColumn];
+            if(min > array[i][lastColumn].value){
+                min = array[i][lastColumn].value;
                 smallestIndex = i;
             }
         }
@@ -109,32 +195,46 @@ public class MatrixHelper {
      * @param smallestIndex
      * @return
      */
-    public int[] findPath(int [][] array,int smallestIndex){
-        int [] resultArray = new int[array[0].length];
+    public int[] findPath(ResultNode [][] array,int smallestIndex){
+      //  int [] resultArray = new int[array[0].length];
 
         int min = 0;
         int i = smallestIndex;
-        int l = array[0].length-1;
+       // int l = array[0].length-1;
+        //int l = (valueOfLastNode > 0)? valueOfLastNode:array[0].length-1;
+        int l = getEndOfResultArray(array);
+        int [] resultArray = new int[l+1];
 
         resultArray[l] = smallestIndex+1;
 
 
-        for (int j = array[0].length; j > 0; j--){
+        for (int j = l+1; j > 0; j--){
+
+            boolean secondNumberIsSmaller = false;
+            boolean firstNumberIsSmaller = false;
 
             if(getValue(array,i,j-1) <= getValue(array,i+1,j-1)){
                 min = getValue(array,i,j-1);
-                resultArray[l] = i+1;
-            }else if ( getValue(array,i+1,j-1) <= getValue(array,i-1,j-1)){
+                firstNumberIsSmaller = true;
+
+            }else if ( getValue(array,i+1,j-1) <= getValue(array,i,j-1)){
                 min = getValue(array,i+1,j-1);
-                i= correctValue(array,i+1);
-                resultArray[l] = i+1;
+                secondNumberIsSmaller = true;
             }
 
             if(getValue(array,i-1,j-1) < min){
                 min = getValue(array,i-1,j-1);
                 i= correctValue(array,i-1);
                 resultArray[l] = i+1;
+            }else if(secondNumberIsSmaller){
+                i= correctValue(array,i+1);
+                resultArray[l] = i+1;
+
+            }else if(firstNumberIsSmaller){
+                i= correctValue(array,i);
+                resultArray[l] = i+1;
             }
+
             l--;
 
 
@@ -149,15 +249,21 @@ public class MatrixHelper {
      * @param i
      * @return
      */
-    public int  correctValue(int[][] a,int  i){
+    public int  correctValue(ResultNode [][] a,int  i){
         if(i == -1){
-            i=0;
-        }else if(i < 0 ){
+            i=a.length-1;
+        }else
+
+        if(i < 0 ){
             i = a.length-1 + i;
         }else if(i >= a.length){
             i = i - a.length;
         }
 
         return  i;
+    }
+
+    public int getEndOfResultArray(ResultNode [][] array){
+       return (isLimitReached)? valueOfLastNode:array[0].length-1;
     }
 }
