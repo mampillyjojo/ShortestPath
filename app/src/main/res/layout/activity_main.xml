@@ -9,14 +9,57 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="scoreboard.fiddle.com.shortpath.MainActivity">
+    tools:context="scoreboard.fiddle.com.shortpath.MainActivity"
+    android:background="#999999">
 
-    <EditText
-        android:id="@+id/matrixRows"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    </EditText>
+        <EditText
+            android:id="@+id/matrixRows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="80dp"
+            android:background="@android:color/white"
+            android:inputType="number"
+            android:hint="rows">
+
+        </EditText>
+        <EditText
+            android:id="@+id/matrixColumn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="80dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="number"
+            android:background="@android:color/white"
+            android:hint="column">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/setGridViewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Display"/>
+
+        <Button
+            android:id="@+id/calculate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calculate"/>
+    </LinearLayout>
+
+<!--    <LinearLayout
+        android:id="@+id/gridHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>-->
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,4 +83,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="90dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        />
+
+
 </LinearLayout>

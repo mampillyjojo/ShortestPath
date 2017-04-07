@@ -32,7 +32,7 @@ public class Main {
         // Convert Object array to int array
         try {
              integerArray = matrixHelper.convertToIntArray(inputArray);
-        }catch (IllegalArgumentException e){
+        }catch (Exception e){
             result.arrayInvalid = true;
         }
 

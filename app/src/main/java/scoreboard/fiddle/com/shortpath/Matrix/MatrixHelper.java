@@ -60,7 +60,10 @@ public class MatrixHelper {
             for(int j=0;j< array[i].length;j++){
                 if(array[i][j] instanceof Integer){
                     integerArray[i][j] = (Integer) array[i][j];
-                }else {
+                }else  if(array[i][j] instanceof String){
+
+                    integerArray[i][j] = Integer.parseInt((String) array[i][j]);
+                }else{
                     throw new IllegalArgumentException("Invalid Input");
                 }
             }
