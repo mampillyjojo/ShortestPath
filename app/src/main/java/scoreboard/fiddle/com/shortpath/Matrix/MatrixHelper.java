@@ -64,6 +64,7 @@ public class MatrixHelper {
 
                     integerArray[i][j] = Integer.parseInt((String) array[i][j]);
                 }else{
+                    System.out.println("Fail i:"+i+" j: "+j+array[i][j]);
                     throw new IllegalArgumentException("Invalid Input");
                 }
             }

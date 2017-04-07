@@ -1,8 +1,11 @@
 package scoreboard.fiddle.com.shortpath;
 
+import android.content.Context;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -34,8 +37,21 @@ public class MainActivity extends AppCompatActivity {
         Button calcuate = (Button) findViewById(R.id.calculate);
         calcuate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                calculateMatrix(getArray());
+            public void onClick(View view) {
+
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        calculateMatrix(getArray());
+
+                    }
+                }, 100);
+               // calculateMatrix(getArray());
             }
         });
 
